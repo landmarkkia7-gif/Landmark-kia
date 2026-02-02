@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FaHome, FaPhone, FaMapMarkerAlt } from 'react-icons/fa';
+import { FaHome,  FaMapMarkerAlt } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 function Sidebar({ active }) {

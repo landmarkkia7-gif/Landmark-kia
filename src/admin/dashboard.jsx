@@ -43,12 +43,12 @@ function Dashboard() {
   const selectedCity = city?.toUpperCase() || "ALL";
 
   const [active, setActive] = useState(true);
-  const [search, setSearch] = useState("");
+  const [search] = useState("");
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [fromDate, setFromDate] = useState("");
-  const [toDate, setToDate] = useState("");
+  const [fromDate] = useState("");
+  const [toDate] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 10;
 

@@ -49,11 +49,11 @@ export default function KiaServicePage() {
   );
 }
 
-function Step({ num, text }) {
-  return (
-    <div className='p-6 bg-white shadow rounded-xl'>
-      <div className='text-3xl font-bold text-red-600'>{num}</div>
-      <p className='mt-2'>{text}</p>
-    </div>
-  );
-}
+// function Step({ num, text }) {
+//   return (
+//     <div className='p-6 bg-white shadow rounded-xl'>
+//       <div className='text-3xl font-bold text-red-600'>{num}</div>
+//       <p className='mt-2'>{text}</p>
+//     </div>
+//   );
+// }
