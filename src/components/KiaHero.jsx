@@ -10,7 +10,7 @@ export default function KiaHero() {
         {/* LEFT — CAR IMAGE */}
         <div className="relative flex justify-center md:justify-start">
           <img
-            src="https://www.carkia.in/assets/model-color/1syros.png"   // <-- replace with Kia car PNG
+            src="/images/Syros.webp"   // <-- replace with Kia car PNG
             alt="Kia Car"
             className="w-[90%] md:w-[520px] object-contain drop-shadow-2xl"
           />

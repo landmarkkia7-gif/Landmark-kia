@@ -13,7 +13,7 @@ export default function KiaServicePage() {
       {/* HERO */}
       <section className='relative min-h-[80vh] flex items-center text-white'>
         <img
-          src='https://www.carkia.in/assets/images/Q-city-financial-district-1.jpeg'
+          src='/images/Landmark_service.webp'
           alt='Kia Service'
           className='absolute inset-0 object-cover w-full h-full'
         />

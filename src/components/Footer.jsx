@@ -1,5 +1,5 @@
 import React from "react";
-import { FiFacebook, FiInstagram, FiLinkedin, FiPhone } from "react-icons/fi";
+import { FiMail, FiPhone } from "react-icons/fi";
 
 export default function Footer() {
   return (
@@ -13,25 +13,34 @@ export default function Footer() {
             alt="Company Logo"
             className="w-34 "
           />
-      
+
         </div>
 
         {/* SERVICE CENTERS */}
         <div>
-          <h4 className="mb-4 font-semibold text-white">Service Centers</h4>
+          <h4 className="mb-4 font-semibold text-white">For Service</h4>
 
           <div className="space-y-3 text-sm">
-            <p className="flex items-center gap-2">
-              <FiPhone /> Raidurg – 7799906839
-            </p>
-            <p className="flex items-center gap-2">
-              <FiPhone /> Kompally – 9123456789
-            </p>
-            <p className="flex items-center gap-2">
-              <FiPhone /> Kukatpally – 9876543210
-            </p>
+            {/* PHONE */}
+            <a
+              href="tel:+919100075700"
+              className="flex items-center gap-2 text-white hover:text-gray-300"
+            >
+              <FiPhone />
+              <span>+91 91000 75700</span>
+            </a>
+
+            {/* EMAIL */}
+            <a
+              href="mailto:anjani.n@landmark-kia.in"
+              className="flex items-center gap-2 text-white hover:text-gray-300"
+            >
+              <FiMail />
+              <span>anjani.n@landmark-kia.in</span>
+            </a>
           </div>
         </div>
+
 
         {/* QUICK LINKS */}
         <div>
@@ -40,12 +49,12 @@ export default function Footer() {
           <ul className="space-y-2 text-sm">
             <li><a href="/privacy-policy" className="hover:text-white">Privacy Policy</a></li>
             <li><a href="/terms" className="hover:text-white">Terms & Conditions</a></li>
-            <li><a href="/contact" className="hover:text-white">Contact Us</a></li>
+            <li><a href="/" className="hover:text-white">Contact Us</a></li>
           </ul>
         </div>
 
         {/* SOCIAL */}
-        <div>
+        {/* <div>
           <h4 className="mb-4 font-semibold text-white">Follow Us</h4>
 
           <div className="flex gap-4 text-xl">
@@ -53,7 +62,7 @@ export default function Footer() {
             <a href="/" className="hover:text-pink-500"><FiInstagram /></a>
             <a href="/" className="hover:text-blue-400"><FiLinkedin /></a>
           </div>
-        </div>
+        </div> */}
 
       </div>
 
@@ -75,7 +84,7 @@ export default function Footer() {
               alt="Broaddcast Logo"
               className="object-contain h-10 w-100 hover:text-red-400"
             />
-           
+
           </a>
         </div>
       </div>
