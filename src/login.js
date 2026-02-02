@@ -44,16 +44,16 @@ function Login() {
   };
 
   return (
-    <section className="relative w-full h-screen overflow-hidden py-40 max-h-screen bg-no-repeat bg-cover bg-[url('https://images.pexels.com/photos/3183132/pexels-photo-3183132.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')]">
-      <div className="container mx-auto px-4 h-full">
-        <div className="flex content-center items-center justify-center h-full">
-          <div className="w-full lg:w-4/12 px-4">
-            <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-white border border-gray-200">
-              <div className="flex-auto px-4 lg:px-10 py-10">
+    <section className="relative w-full h-screen overflow-hidden py-40 max-h-screen bg-no-repeat bg-cover bg-[url('https://static.vecteezy.com/system/resources/thumbnails/011/635/825/small/abstract-square-interface-modern-background-concept-fingerprint-digital-scanning-visual-security-system-authentication-login-vector.jpg')]">
+      <div className="container h-full px-4 mx-auto">
+        <div className="flex items-center content-center justify-center h-full">
+          <div className="w-full px-4 lg:w-4/12">
+            <div className="relative flex flex-col w-full min-w-0 mb-6 break-words bg-white border border-gray-200 rounded-lg shadow-lg">
+              <div className="flex-auto px-4 py-10 lg:px-10">
                 <form onSubmit={handleSubmit}>
                   <div className="relative w-full mb-4">
                     <label
-                      className="block font-semibold text-purple-600 text-sm mb-1"
+                      className="block mb-1 text-sm font-semibold text-purple-600"
                       htmlFor="grid-password"
                     >
                       Email
@@ -69,7 +69,7 @@ function Login() {
 
                   <div className="relative w-full mb-4">
                     <label
-                      className="block font-semibold text-purple-600 text-sm mb-1"
+                      className="block mb-1 text-sm font-semibold text-purple-600"
                       htmlFor="grid-password"
                     >
                       Password
@@ -86,22 +86,22 @@ function Login() {
                       <input
                         id="customCheckLogin"
                         type="checkbox"
-                        className="form-checkbox border-0 rounded text-purple-700 ml-1 w-5 h-5 ease-linear transition-all duration-150"
+                        className="w-5 h-5 ml-1 text-purple-700 transition-all duration-150 ease-linear border-0 rounded form-checkbox"
                       />
-                      <span className="ml-2 text-sm font-semibold text-purple-600">
+                      <span className="ml-2 text-sm font-semibold text-black">
                         Remember me
                       </span>
                     </label>
                   </div>
 
-                  <div className="text-center mt-6">
+                  <div className="mt-6 text-center">
                     <button
-                      className="bg-purple-700 text-white active:bg-purple-600 text-sm uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
+                      className="w-full px-6 py-3 mb-1 mr-1 text-sm text-white uppercase transition-all duration-150 ease-linear bg-black rounded shadow outline-none active:bg-purple-600 hover:shadow-lg focus:outline-none"
                       type="submit"
                     >
                       {loading ? (
                         <div className="flex items-center justify-center">
-                          <CgSpinner className="animate-spin h-5 mr-2 text-white w-5" />
+                          <CgSpinner className="w-5 h-5 mr-2 text-white animate-spin" />
                           Loading...
                         </div>
                       ) : (

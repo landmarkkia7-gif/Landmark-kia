@@ -38,13 +38,13 @@ function Navbar({ handleActive }) {
               <div className="relative flex items-center justify-between h-16">
                 <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                   {/* Mobile menu button*/}
-                  <Disclosure.Button className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+                  <Disclosure.Button className="inline-flex items-center justify-center p-2 text-gray-400 rounded-md hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
                     <span className="sr-only">Open main menu</span>
                     {open ? (
-                      <IoMdClose className="block h-6 w-6" aria-hidden="true" />
+                      <IoMdClose className="block w-6 h-6" aria-hidden="true" />
                     ) : (
                       <RiMenu2Fill
-                        className="block h-6 w-6"
+                        className="block w-6 h-6"
                         aria-hidden="true"
                       />
                     )}
@@ -55,13 +55,13 @@ function Navbar({ handleActive }) {
                 </button>
                 <div className="absolute inset-y-0 right-0 z-20 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                   {/* Profile dropdown */}
-                  <Menu as="div" className="ml-3 relative">
+                  <Menu as="div" className="relative ml-3">
                     <div>
-                      <Menu.Button className="rounded-full focus:outline-none border border-gray-300 p-1">
+                      <Menu.Button className="p-1 border border-gray-300 rounded-full focus:outline-none">
                         <span className="sr-only">Open user menu</span>
                         <img
-                          className="h-8 w-8 rounded-full object-contain"
-                          src={require("../images/logo.png")}
+                          className="object-contain w-8 h-8 rounded-full"
+                          src='/images/Landmark-kia-service-logo.svg'
                           alt=""
                         />
                       </Menu.Button>
@@ -75,7 +75,7 @@ function Navbar({ handleActive }) {
                       leaveFrom="transform opacity-100 scale-100"
                       leaveTo="transform opacity-0 scale-95"
                     >
-                      <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                      <Menu.Items className="absolute right-0 w-48 py-1 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                         <Menu.Item>
                           {({ active }) => (
                             <button

@@ -12,12 +12,11 @@ function Sidebar({ active }) {
 
   return (
     <div
-      className={`${
-        active ? 'w-72' : 'w-16'
-      } bg-white border-r duration-300 border-gray-100`}
+      className={`${active ? 'w-72' : 'w-16'
+        } bg-white border-r duration-300 border-gray-100`}
     >
       <img
-        src={require('../images/logo.png')}
+       src='/images/Landmark-kia-service-logo.svg'
         className='w-auto h-16 mx-auto mt-3'
         alt='Logo'
       />
@@ -26,11 +25,10 @@ function Sidebar({ active }) {
         {/* Home */}
         <Link
           to='/admin/dashboard'
-          className={`${
-            activeScreen === '/admin/dashboard'
-              ? 'text-white bg-purple-700'
+          className={`${activeScreen === '/admin/dashboard'
+              ? 'text-white bg-black'
               : 'text-gray-500'
-          } flex items-center p-4 `}
+            } flex items-center p-4 `}
         >
           <FaHome className='mr-3' size={22} />
           <span className={`font-semibold ${active ? 'block' : 'hidden'}`}>

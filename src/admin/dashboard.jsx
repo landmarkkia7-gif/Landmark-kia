@@ -18,7 +18,7 @@ const customStyles = {
     style: {
       paddingLeft: "8px",
       paddingRight: "8px",
-      backgroundColor: "#7e22ce",
+      backgroundColor: "black",
       color: "white",
       fontSize: "15px",
     },

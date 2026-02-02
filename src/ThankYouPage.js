@@ -16,18 +16,18 @@ const ThankYouPage = () => {
     <div className='flex flex-col items-center justify-center min-h-screen bg-gray-50'>
       {/* Navigation Bar */}
       <nav className='fixed top-0 left-0 z-50 flex items-center justify-between w-full px-6 py-3 shadow-md md:px-12 lg:px-16 bg-white/30 backdrop-blur-lg'>
-        <Link to={'/'}>
+        <Link to='/'>
           <img
-            src={require('./images/logo.png')}
-            className='h-12'
-            alt='Hyundai Logo'
+            src='/images/Landmark-kia-service-logo.svg'
+            className='w-full h-20 '
+            alt='kia Logo'
           />
         </Link>
         <a
           className='text-lg font-semibold text-gray-900'
-          href='tel:+917997988851'
+          href='tel:+919100075700'
         >
-          📞 7997988851
+          📞 9100075700
         </a>
       </nav>
 
