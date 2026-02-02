@@ -16,10 +16,10 @@ function Navbar() {
       <h1 className="flex items-center text-base font-semibold text-white md:text-xl">
         Booking for
         <a
-          href="tel:+917995088847"
+          href="tel:+919100075700"
           className="pl-3 text-lg font-bold text-black md:text-xl"
         >
-          📞7995088847
+          📞9100075700
         </a>
       </h1>
 

@@ -1,6 +1,70 @@
-import React from "react";
+import React, { useState } from "react";
+import { addDoc, collection, Timestamp } from "firebase/firestore";
+import { CgSpinner } from "react-icons/cg";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { db } from "../lib/firebase";
 
+/* =========================
+   MAIN COMPONENT
+========================= */
 export default function ScheduleService() {
+  const navigate = useNavigate();
+
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    mobile: "",
+    date: "",
+    carYear: "",
+    model: "",
+    city: "",
+    pickup: "",
+    comments: "",
+  });
+
+  const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (e) =>
+    setForm({ ...form, [e.target.name]: e.target.value });
+
+  const validate = () => {
+    let err = {};
+    if (!form.name.trim()) err.name = "Name is required";
+    if (!/^\d{10}$/.test(form.mobile))
+      err.mobile = "Enter valid 10-digit mobile number";
+    if (!form.email || !/\S+@\S+\.\S+/.test(form.email))
+      err.email = "Valid email required";
+    if (!form.model) err.model = "Select car model";
+    if (!form.city) err.city = "Select location";
+    if (!form.pickup) err.pickup = "Select pickup option";
+    return err;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const validationErrors = validate();
+    setErrors(validationErrors);
+    if (Object.keys(validationErrors).length) return;
+
+    setLoading(true);
+    try {
+      await addDoc(collection(db, "serviceAppointments"), {
+        ...form,
+        timestamp: Timestamp.now(),
+      });
+
+      toast.success("Service booked successfully 🚗");
+      navigate("/thank-you");
+    } catch (err) {
+      console.error(err);
+      toast.error("Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <section className="py-20 bg-black">
       <div className="max-w-6xl px-6 mx-auto">
@@ -15,66 +79,158 @@ export default function ScheduleService() {
 
         {/* FORM CARD */}
         <div className="p-8 mt-12 shadow-2xl bg-white/95 backdrop-blur rounded-2xl md:p-10">
-          <form className="grid gap-6 md:grid-cols-3">
+          <form
+            onSubmit={handleSubmit}
+            className="grid gap-6 md:grid-cols-3"
+          >
+            <Input
+              name="name"
+              placeholder="Full Name *"
+              value={form.name}
+              onChange={handleChange}
+              error={errors.name}
+            />
 
-            <Input placeholder="Full Name *" />
-            <Input placeholder="Email Address *" type="email" />
-            <Input placeholder="Mobile Number *" type="tel" />
+            <Input
+              name="email"
+              type="email"
+              placeholder="Email Address *"
+              value={form.email}
+              onChange={handleChange}
+              error={errors.email}
+            />
 
-            <Input type="date" />
-            <Input placeholder="Car Year *" />
+            <Input
+              name="mobile"
+              type="tel"
+              placeholder="Mobile Number *"
+              value={form.mobile}
+              onChange={handleChange}
+              error={errors.mobile}
+            />
 
-            <Select
-              options={["-- Select Car Model --", "Seltos", "Sonet", "Carens"]}
+            <Input
+              name="date"
+              type="date"
+              value={form.date}
+              onChange={handleChange}
+            />
+
+            <Input
+              name="carYear"
+              placeholder="Car Year"
+              value={form.carYear}
+              onChange={handleChange}
             />
 
             <Select
-              options={["-- Select Location --", "Hyderabad", "Chennai"]}
+              name="model"
+              value={form.model}
+              onChange={handleChange}
+              options={[
+                "-- Select Car Model --",
+                "Seltos",
+                "Sonet",
+                "Carens",
+              ]}
+              error={errors.model}
             />
 
             <Select
-              options={["-- Pick Up Required --", "Yes", "No"]}
+              name="city"
+              value={form.city}
+              onChange={handleChange}
+              options={[
+                "-- Select Location --",
+                "Hyderabad",
+                "Chennai",
+                "Khammam",
+              ]}
+              error={errors.city}
             />
 
-            {/* TEXTAREA */}
+            <Select
+              name="pickup"
+              value={form.pickup}
+              onChange={handleChange}
+              options={[
+                "-- Pick Up Required --",
+                "Yes",
+                "No",
+              ]}
+              error={errors.pickup}
+            />
+
             <textarea
+              name="comments"
               rows="4"
               placeholder="Additional Comments"
+              value={form.comments}
+              onChange={handleChange}
               className="resize-none md:col-span-3 inputStyle"
             />
+
+            {/* BUTTON */}
+            <div className="mt-6 text-center md:col-span-3">
+              <button
+                type="submit"
+                disabled={loading}
+                className="px-12 py-4 text-lg font-semibold text-white transition bg-gray-900 rounded-lg shadow-lg hover:bg-black"
+              >
+                {loading ? (
+                  <span className="flex items-center justify-center">
+                    <CgSpinner className="mr-2 animate-spin" /> Booking...
+                  </span>
+                ) : (
+                  "Book Appointment"
+                )}
+              </button>
+            </div>
           </form>
-
-          {/* BUTTON */}
-          <div className="mt-10 text-center">
-            <button className="px-12 py-4 text-lg font-semibold text-white transition bg-gray-900 rounded-lg shadow-lg hover:bg-black">
-              Book Appointment
-            </button>
-          </div>
         </div>
-
       </div>
     </section>
   );
 }
 
-/* Reusable Input */
-function Input({ placeholder, type = "text" }) {
+/* =========================
+   REUSABLE INPUT
+========================= */
+function Input({ name, placeholder, type = "text", value, onChange, error }) {
   return (
-    <input
-      type={type}
-      placeholder={placeholder}
-      className="inputStyle"
-    />
+    <div>
+      <input
+        name={name}
+        type={type}
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+        className="w-full inputStyle"
+      />
+      {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
+    </div>
   );
 }
 
-/* Reusable Select */
-function Select({ options }) {
+/* =========================
+   REUSABLE SELECT
+========================= */
+function Select({ name, value, onChange, options, error }) {
   return (
-    <select className="inputStyle">
-      {options.map((opt, i) => (
-        <option key={i}>{opt}</option>
-      ))}
-    </select>
+    <div>
+      <select
+        name={name}
+        value={value}
+        onChange={onChange}
+        className="w-full inputStyle"
+      >
+        {options.map((opt, i) => (
+          <option key={i} value={i === 0 ? "" : opt}>
+            {opt}
+          </option>
+        ))}
+      </select>
+      {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
+    </div>
   );
 }

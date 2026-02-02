@@ -39,7 +39,7 @@ function Sidebar({ active }) {
         </Link>
 
         {/* Hyderabad Dashboard */}
-        <Link
+        {/* <Link
           to='/dashboard/hyderabad'
           className={`${
             activeScreen === '/dashboard/hyderabad'
@@ -51,10 +51,10 @@ function Sidebar({ active }) {
           <span className={`font-semibold ${active ? 'block' : 'hidden'}`}>
             Hyderabad
           </span>
-        </Link>
+        </Link> */}
 
         {/* Khammam Dashboard */}
-        <Link
+        {/* <Link
           to='/dashboard/khammam'
           className={`${
             activeScreen === '/dashboard/khammam'
@@ -66,7 +66,7 @@ function Sidebar({ active }) {
           <span className={`font-semibold ${active ? 'block' : 'hidden'}`}>
             Khammam
           </span>
-        </Link>
+        </Link> */}
       </div>
     </div>
   );

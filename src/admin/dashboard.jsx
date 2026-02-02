@@ -9,6 +9,9 @@ import toast from "react-hot-toast";
 import * as XLSX from "xlsx";
 import { useParams } from "react-router-dom";
 
+/* =====================
+   TABLE STYLES
+===================== */
 const customStyles = {
   rows: { style: { minHeight: "55px" } },
   headCells: {
@@ -29,6 +32,9 @@ const customStyles = {
   },
 };
 
+/* =====================
+   EXPORT BUTTON
+===================== */
 const Export = ({ onExport }) => (
   <button
     className="px-5 py-1.5 text-sm text-white bg-green-600 rounded"
@@ -38,63 +44,78 @@ const Export = ({ onExport }) => (
   </button>
 );
 
-function Dashboard() {
+/* =====================
+   MAIN COMPONENT
+===================== */
+function ServiceDashboard() {
   const { city } = useParams();
   const selectedCity = city?.toUpperCase() || "ALL";
 
   const [active, setActive] = useState(true);
-  const [search] = useState("");
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [fromDate] = useState("");
-  const [toDate] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 10;
 
+  const rowsPerPage = 10;
   const handleActive = () => setActive(!active);
 
+  /* =====================
+     FETCH DATA
+  ===================== */
   useEffect(() => {
-    setLoading(true);
     const fetchData = async () => {
       try {
-        const q = query(collection(db, "leads"), orderBy("timestamp", "desc"));
-        const querySnapshot = await getDocs(q);
+        const q = query(
+          collection(db, "serviceAppointments"),
+          orderBy("timestamp", "desc")
+        );
 
-        const list = querySnapshot.docs.map((doc) => ({
+        const snap = await getDocs(q);
+
+        const list = snap.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
 
-        const unique = list.filter(
-          (lead, index, self) =>
-            index ===
-            self.findIndex(
-              (l) =>
-                (l.mobile && l.mobile === lead.mobile) ||
-                (l.email && l.email === lead.email)
-            )
-        );
-
-        setData(unique);
-        setFilteredData(unique);
-        setLoading(false);
+        setData(list);
+        setFilteredData(list);
       } catch (error) {
         console.error(error);
-        toast.error("Something went wrong!");
+        toast.error("Failed to load service appointments");
+      } finally {
         setLoading(false);
       }
     };
+
     fetchData();
   }, []);
 
+  /* =====================
+     DATE FORMAT
+  ===================== */
   const formatTimestamp = (timestamp) => {
-    if (!timestamp?.seconds) return "Invalid date";
-    const date = new Date(timestamp.seconds * 1000);
-    return date.toLocaleDateString("en-CA");
+    if (!timestamp?.seconds) return "N/A";
+    return new Date(timestamp.seconds * 1000).toLocaleDateString("en-CA");
   };
 
-  /* FIXED FUNCTION */
+  /* =====================
+     FILTER BY CITY
+  ===================== */
+  useEffect(() => {
+    const result =
+      selectedCity === "ALL"
+        ? data
+        : data.filter(
+            (item) => item.city?.toUpperCase() === selectedCity
+          );
+
+    setFilteredData(result);
+  }, [selectedCity, data]);
+
+  /* =====================
+     EXCEL EXPORT
+  ===================== */
   const downloadExcel = useCallback(() => {
     const formatted = filteredData.map((row, index) => ({
       ID: index + 1,
@@ -102,29 +123,20 @@ function Dashboard() {
       Email: row.email,
       Phone: row.mobile,
       Model: row.model,
-      City: row.city ?? "N/A",
-      Timestamp: formatTimestamp(row.timestamp),
+      City: row.city,
+      Pickup: row.pickup,
+      ServiceDate: row.date || "N/A",
+      CreatedAt: formatTimestamp(row.timestamp),
     }));
 
     const worksheet = XLSX.utils.json_to_sheet(formatted);
     const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Leads");
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Service Appointments");
 
-    const excelBuffer = XLSX.write(workbook, {
-      bookType: "xlsx",
-      type: "array",
-    });
-
-    const blob = new Blob([excelBuffer], {
-      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-    });
-
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = `${selectedCity}-leads.xlsx`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    XLSX.writeFile(
+      workbook,
+      `${selectedCity}-service-appointments.xlsx`
+    );
   }, [filteredData, selectedCity]);
 
   const actionsMemo = useMemo(
@@ -132,60 +144,33 @@ function Dashboard() {
     [downloadExcel]
   );
 
+  /* =====================
+     TABLE COLUMNS
+  ===================== */
   const columns = [
     {
       name: "ID",
-      selector: (row, index) => (currentPage - 1) * rowsPerPage + index + 1,
+      selector: (_, index) =>
+        (currentPage - 1) * rowsPerPage + index + 1,
       width: "70px",
     },
     { name: "Name", selector: (row) => row.name },
     { name: "Email", selector: (row) => row.email },
     { name: "Phone", selector: (row) => row.mobile },
     { name: "Model", selector: (row) => row.model },
-    { name: "City", selector: (row) => row.city ?? "N/A" },
+    { name: "City", selector: (row) => row.city },
+    { name: "Pickup", selector: (row) => row.pickup },
+    { name: "Service Date", selector: (row) => row.date || "N/A" },
     {
-      name: "Timestamp",
+      name: "Created At",
       selector: (row) => formatTimestamp(row.timestamp),
       sortable: true,
     },
   ];
 
-  useEffect(() => {
-    let result = data.filter((item) => {
-      const ts = item.timestamp?.seconds;
-      if (!ts) return false;
-
-      const itemDate = new Date(ts * 1000);
-      const from = fromDate ? new Date(fromDate) : null;
-      const to = toDate ? new Date(toDate) : null;
-
-      const matchSearch =
-        item.name?.toLowerCase().includes(search.toLowerCase()) ||
-        item.email?.toLowerCase().includes(search.toLowerCase()) ||
-        item.mobile?.toLowerCase().includes(search.toLowerCase());
-
-      const matchDate =
-        (!from || itemDate >= from) && (!to || itemDate <= to);
-
-      const matchCity =
-        selectedCity === "ALL" || item.city?.toUpperCase() === selectedCity;
-
-      return matchSearch && matchDate && matchCity;
-    });
-
-    result = result.filter(
-      (lead, index, self) =>
-        index ===
-        self.findIndex(
-          (l) =>
-            (l.mobile && l.mobile === lead.mobile) ||
-            (l.email && l.email === lead.email)
-        )
-    );
-
-    setFilteredData(result);
-  }, [search, fromDate, toDate, selectedCity, data]);
-
+  /* =====================
+     RENDER
+  ===================== */
   return (
     <div className="flex flex-row h-screen">
       <Sidebar active={active} />
@@ -194,10 +179,14 @@ function Dashboard() {
 
         <div className="mx-5 mt-5">
           {loading ? (
-            <CgSpinner className="flex mx-auto animate-spin" size={50} color="#7e22ce" />
+            <CgSpinner
+              className="flex mx-auto animate-spin"
+              size={50}
+              color="#7e22ce"
+            />
           ) : (
             <DataTable
-              title={`Leads - ${selectedCity}`}
+              title={`Service Appointments - ${selectedCity}`}
               columns={columns}
               data={filteredData}
               pagination
@@ -215,4 +204,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
+export default ServiceDashboard;
