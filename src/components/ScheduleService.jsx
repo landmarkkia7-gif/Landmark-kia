@@ -132,8 +132,8 @@ export default function ScheduleServiceForm() {
             <option>Syros</option>
             <option>Carens</option>
             <option>Carnival</option>
-            <option>EV6</option>
-            <option>EV9</option>
+            {/* <option>EV6</option>
+            <option>EV9</option> */}
           </select>
           {errors.model && (
             <p className="mt-1 text-xs text-red-500">{errors.model}</p>
@@ -148,7 +148,7 @@ export default function ScheduleServiceForm() {
             onChange={handleChange}
             className="inputStyle"
           >
-            <option value="">Preferred Location</option>
+            <option value="">Preferred Service Location</option>
             <option>Medipally</option>
             <option>Attapur</option>
             <option>Kompally</option>
