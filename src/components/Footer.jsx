@@ -49,9 +49,9 @@ export default function Footer() {
           <h4 className="mb-4 font-semibold text-white">Follow Us</h4>
 
           <div className="flex gap-4 text-xl">
-            <a href="#" className="hover:text-blue-500"><FiFacebook /></a>
-            <a href="#" className="hover:text-pink-500"><FiInstagram /></a>
-            <a href="#" className="hover:text-blue-400"><FiLinkedin /></a>
+            <a href="/" className="hover:text-blue-500"><FiFacebook /></a>
+            <a href="/" className="hover:text-pink-500"><FiInstagram /></a>
+            <a href="/" className="hover:text-blue-400"><FiLinkedin /></a>
           </div>
         </div>
 
