@@ -127,11 +127,11 @@ export default function ScheduleServiceForm() {
             className="inputStyle"
           >
             <option value="">Select Model</option>
-            <option>Seltos</option>
-            <option>Sonet</option>
-            <option>Syros</option>
-            <option>Carens</option>
-            <option>Carnival</option>
+            <option>Kia Seltos</option>
+            <option>Kia Sonet</option>
+            <option>Kia Syros</option>
+            <option>Kia Carens</option>
+            <option>Kia Carnival</option>
             {/* <option>EV6</option>
             <option>EV9</option> */}
           </select>
