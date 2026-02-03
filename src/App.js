@@ -9,8 +9,7 @@ import NotFound from './not-found';
 import ThankYouPage from './ThankYouPage';
 import PrivacyPolicy from './components/screens/PrivacyPolicy';
 import TermsConditions from './components/TermsConditions';
-
-
+import Analytics from '../src/admin/Analytics';
 const App = () => {
   const { currentUser } = useContext(AuthContext);
 
@@ -50,6 +49,14 @@ const App = () => {
           element={
             <ProtectedRoute>
               <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path='/admin/Analytics'
+          element={
+            <ProtectedRoute>
+             <Analytics/>
             </ProtectedRoute>
           }
         />

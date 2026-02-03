@@ -20,7 +20,7 @@ function Login() {
       console.log(email, password);
       const userData = await signInWithEmailAndPassword(auth, email, password);
       console.log("userData: ", userData);
-      navigate("/admin/dashboard");
+      navigate("/admin/Analytics");
       dispatch({ type: "LOGIN", payload: userData });
     } catch (error) {
       const errorCode = error.code;

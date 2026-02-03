@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FaHome } from 'react-icons/fa';
+import { FaHome, FaMapMarkerAlt } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 function Sidebar({ active }) {
@@ -16,55 +16,41 @@ function Sidebar({ active }) {
         } bg-white border-r duration-300 border-gray-100`}
     >
       <img
-       src='/images/Landmark-kia-service-logo.svg'
+        src='/images/Landmark-kia-service-logo.svg'
         className='w-auto h-16 mx-auto mt-3'
         alt='Logo'
       />
 
       <div className='flex flex-col mt-12 space-y-1'>
+        {/* Dashboard */}
+        <Link
+          to='/admin/Analytics'
+          className={`${activeScreen === '/admin/Analytics'
+              ? 'text-white bg-black'
+              : 'text-gray-500'
+            } flex items-center p-4`}
+        >
+          <FaMapMarkerAlt className='mr-3' size={22} />
+          <span className={`font-semibold ${active ? 'block' : 'hidden'}`}>
+            Dashboard
+          </span>
+        </Link>
         {/* Home */}
         <Link
           to='/admin/dashboard'
           className={`${activeScreen === '/admin/dashboard'
-              ? 'text-white bg-black'
-              : 'text-gray-500'
+            ? 'text-white bg-black'
+            : 'text-gray-500'
             } flex items-center p-4 `}
         >
           <FaHome className='mr-3' size={22} />
           <span className={`font-semibold ${active ? 'block' : 'hidden'}`}>
-            Home
+           Leads
           </span>
         </Link>
 
-        {/* Hyderabad Dashboard */}
-        {/* <Link
-          to='/dashboard/hyderabad'
-          className={`${
-            activeScreen === '/dashboard/hyderabad'
-              ? 'text-white bg-purple-700'
-              : 'text-gray-500'
-          } flex items-center p-4`}
-        >
-          <FaMapMarkerAlt className='mr-3' size={22} />
-          <span className={`font-semibold ${active ? 'block' : 'hidden'}`}>
-            Hyderabad
-          </span>
-        </Link> */}
 
-        {/* Khammam Dashboard */}
-        {/* <Link
-          to='/dashboard/khammam'
-          className={`${
-            activeScreen === '/dashboard/khammam'
-              ? 'text-white bg-purple-700'
-              : 'text-gray-500'
-          } flex items-center p-4`}
-        >
-          <FaMapMarkerAlt className='mr-3' size={22} />
-          <span className={`font-semibold ${active ? 'block' : 'hidden'}`}>
-            Khammam
-          </span>
-        </Link> */}
+
       </div>
     </div>
   );

@@ -14,10 +14,9 @@ function Navbar() {
       </Link>
 
       <h1 className="flex items-center text-base font-semibold text-white md:text-xl">
-        Booking for
         <a
           href="tel:+919100075700"
-          className="pl-3 text-lg font-bold text-black md:text-xl"
+          className="pl-3 font-bold text-black text-md md:text-xl"
         >
           📞9100075700
         </a>
