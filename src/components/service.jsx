@@ -10,12 +10,12 @@ function service() {
       time="Mon – Sun 9AM – 7PM"
       phone="91000 75700"
       email="anjani.n@landmark-kia.in"
-      detailsLink="https://www.google.com/maps/place/Kia+Car+Showroom+-+Landmark+Kia+Medipally/@17.4123485,78.4610453,12z/data=!4m10!1m2!2m1!1skia+landmark+uppal!3m6!1s0x3bcb9fb40cc77e99:0x7bd26b8529e6697a!8m2!3d17.4123485!4d78.6134806!15sChJraWEgbGFuZG1hcmsgdXBwYWwiA4gBAVoUIhJraWEgbGFuZG1hcmsgdXBwYWySAQpjYXJfZGVhbGVy4AEA!16s%2Fg%2F11w9nzt4bs?entry=ttu&g_ep=EgoyMDI2MDEyOC4wIKXMDSoASAFQAw%3D%3D"
+      detailsLink="https://maps.app.goo.gl/uoXMo4rka5nVxYnN8"
 
     />
       <ServiceCenterDetails
         title="Landmark Kia Attapur"
-        image="/images/atthapur.jpeg"
+        image="/images/Attapur.jpeg"
         address="Door No 4-3-161 MSurvey No 497, 501 part, Rajendranagar Mandal 498 / 499 & 500/1, Attapur, Telangana 500008 Attapur, Hyderabad, Telangana 500008"
         time="Mon – Sun 9AM – 6PM"
         phone="9100075700"
