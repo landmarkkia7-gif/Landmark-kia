@@ -5,7 +5,7 @@ function service() {
   return (
     <div><ServiceCenterDetails
       title="Landmark Kia Medipally"
-      image="https://lh3.googleusercontent.com/gps-cs-s/AHVAweqUoSCaTzVqgjx56vVjXaLg09GhbIjfNhql1OSUtwdL55hpTgF3O5AOG1WVNVOvKTCGDn0DKZycB6iRXKrh4kPh4DDsSkwbMzob6f4ZEo8Oh6U-_qsTHriJGqC7LL6kZtaDl62OQA=s1360-w1360-h1020-rw"
+      image="/images/medipelly.jpeg"
       address="Survey No. 26, MRR Estates, H.no - 17-60/A, opp. CPRI ROAD, Medipally, Peerzadiguda, Hyderabad, Telangana 500098"
       time="Mon – Sun 9AM – 7PM"
       phone="91000 75700"
@@ -15,7 +15,7 @@ function service() {
     />
       <ServiceCenterDetails
         title="Landmark Kia Attapur"
-        image="https://lh3.googleusercontent.com/p/AF1QipNJMhBewbQS5vYeZmaJihVBeMLT-HFsPKQU-DDW=s1360-w1360-h1020-rw"
+        image="/images/atthapur.jpeg"
         address="Door No 4-3-161 MSurvey No 497, 501 part, Rajendranagar Mandal 498 / 499 & 500/1, Attapur, Telangana 500008 Attapur, Hyderabad, Telangana 500008"
         time="Mon – Sun 9AM – 6PM"
         phone="9100075700"
