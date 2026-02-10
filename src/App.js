@@ -10,6 +10,7 @@ import ThankYouPage from './ThankYouPage';
 import PrivacyPolicy from './components/screens/PrivacyPolicy';
 import TermsConditions from './components/TermsConditions';
 import Analytics from '../src/admin/Analytics';
+import TermsAndConditions from './components/screens/Terms&Conditions';
 const App = () => {
   const { currentUser } = useContext(AuthContext);
 
@@ -35,8 +36,8 @@ const App = () => {
         <Route path='/thank-you' element={<ThankYouPage />} />
         <Route path='/' element={<Home />} />
 
-        <Route path='/PrivacyPolicy' element={<PrivacyPolicy />} />
-        <Route path='/terms-conditions' element={<TermsConditions />} />
+        <Route path='/privacy-policy' element={<PrivacyPolicy />} />
+        <Route path='/terms-conditions' element={<TermsAndConditions />} />
 
         {/* ===========Admin authentication=========== */}
         <Route path='/login' element={<Login />} />

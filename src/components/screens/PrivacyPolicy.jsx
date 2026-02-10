@@ -1,106 +1,141 @@
 import React from "react";
-// import Navbar from "../Navbar";
-// import { Footer } from "../../home";
-import { Link } from "react-router-dom";
+
+import Navbar from "../Navbar";
+import Footer from "../Footer";
 
 export default function PrivacyPolicy() {
   return (
     <>
-      {/* <Navbar/> */}
-      <nav className="fixed top-0 left-0 z-50 flex items-center justify-between w-full px-6 py-3 shadow-md md:px-12 lg:px-16 bg-white/30 backdrop-blur-lg">
-        <Link to={"/"}>
-          <img
-            src={require("./../../images/logo.png")}
-            className="h-12"
-            alt="Hyundai Logo"
-          />
-        </Link>
-        <a
-          className="text-lg font-semibold text-gray-900"
-          href="tel:+917997988851"
-        >
-          📞 7997988851
-        </a>
-      </nav>
-      <div className="max-w-4xl px-6 py-12 mx-auto mt-10 text-gray-800">
-        <h1 className="mb-6 text-4xl font-bold text-teal-700">Privacy Policy</h1>
+      <Navbar />
+
+      <div className="max-w-4xl px-6 py-12 mx-auto mt-20 text-gray-800">
+        <h1 className="mb-6 text-4xl font-bold text-teal-700">
+          Privacy Policy
+        </h1>
 
         <p className="mb-6">
-          At <strong>Lakshmih Hyundai</strong>, we value your privacy and are
-          committed to protecting any personal information you share with us.
-          This Privacy Policy outlines how we collect, use, disclose, and protect
-          your information when you visit our website or interact with us in any way.
+          At <strong>Landmark Kia Service Center</strong>, we respect your privacy
+          and are committed to protecting the personal information you share
+          with us. This Privacy Policy explains how we collect, use, store, and
+          protect your information when you visit our website, book a service,
+          or interact with us in any manner.
         </p>
 
+        {/* Information We Collect */}
         <section className="mb-8">
-          <h2 className="mb-2 text-2xl font-semibold text-gray-700">Information We Collect</h2>
+          <h2 className="mb-2 text-2xl font-semibold text-gray-700">
+            Information We Collect
+          </h2>
           <ul className="pl-5 space-y-1 list-disc">
             <li>
-              <strong>Personal Information:</strong> Such as your name, contact details,
-              address, and payment information if you make a purchase.
+              <strong>Personal Information:</strong> Name, phone number, email
+              address, vehicle details, service booking information, and
+              billing details.
             </li>
             <li>
-              <strong>Non-Personal Information:</strong> Such as your IP address, browser type,
-              language preference, referring site, and other technical information.
+              <strong>Technical Information:</strong> IP address, browser type,
+              device information, and website usage data.
             </li>
           </ul>
         </section>
 
+        {/* How We Use Information */}
         <section className="mb-8">
-          <h2 className="mb-2 text-2xl font-semibold text-gray-700">How We Use Your Information</h2>
+          <h2 className="mb-2 text-2xl font-semibold text-gray-700">
+            How We Use Your Information
+          </h2>
           <ul className="pl-5 space-y-1 list-disc">
-            <li>To provide and personalize our services, including processing transactions and appointments.</li>
-            <li>To improve our website and services based on your feedback and usage patterns.</li>
-            <li>To communicate with you regarding inquiries, appointments, or marketing communications (if opted in).</li>
+            <li>To schedule and manage vehicle service appointments.</li>
+            <li>To communicate service updates, reminders, and confirmations.</li>
+            <li>
+              To improve our service quality, website experience, and customer
+              support.
+            </li>
+            <li>
+              To send promotional messages or offers, only if you have opted in.
+            </li>
           </ul>
         </section>
 
+        {/* Information Sharing */}
         <section className="mb-8">
-          <h2 className="mb-2 text-2xl font-semibold text-gray-700">Sharing Your Information</h2>
+          <h2 className="mb-2 text-2xl font-semibold text-gray-700">
+            Sharing of Information
+          </h2>
           <ul className="pl-5 space-y-1 list-disc">
-            <li>With service providers who assist in operating our website and business.</li>
-            <li>With Hyundai Motor Company or its affiliates for vehicle-related operations.</li>
-            <li>When required by law or to protect our rights and property.</li>
+            <li>
+              With <strong>Kia India Pvt. Ltd.</strong> and its authorized
+              partners for service-related operations.
+            </li>
+            <li>
+              With trusted third-party service providers who assist in website
+              operations, customer communication, and analytics.
+            </li>
+            <li>
+              When required by law or to protect our legal rights and safety.
+            </li>
           </ul>
         </section>
 
+        {/* Data Security */}
         <section className="mb-8">
-          <h2 className="mb-2 text-2xl font-semibold text-gray-700">Security of Your Information</h2>
+          <h2 className="mb-2 text-2xl font-semibold text-gray-700">
+            Data Security
+          </h2>
           <p>
-            We implement appropriate security measures to protect your personal information
-            from unauthorized access or misuse. However, please note that no method of
-            transmission or storage is 100% secure.
+            We implement appropriate technical and organizational security
+            measures to safeguard your personal information. While we strive to
+            protect your data, no online transmission or storage system is
+            completely secure.
           </p>
         </section>
 
+        {/* User Rights */}
         <section className="mb-8">
-          <h2 className="mb-2 text-2xl font-semibold text-gray-700">Your Choices</h2>
+          <h2 className="mb-2 text-2xl font-semibold text-gray-700">
+            Your Rights & Choices
+          </h2>
           <ul className="pl-5 space-y-1 list-disc">
-            <li>Review or update your personal information by contacting us.</li>
-            <li>Opt out of marketing messages at any time.</li>
-            <li>Request deletion of your information, subject to legal obligations.</li>
+            <li>Request access, correction, or update of your information.</li>
+            <li>Opt out of promotional communications at any time.</li>
+            <li>
+              Request deletion of your data, subject to applicable legal and
+              service requirements.
+            </li>
           </ul>
         </section>
 
+        {/* Policy Updates */}
         <section className="mb-8">
-          <h2 className="mb-2 text-2xl font-semibold text-gray-700">Changes to This Policy</h2>
+          <h2 className="mb-2 text-2xl font-semibold text-gray-700">
+            Changes to This Privacy Policy
+          </h2>
           <p>
-            We may update this Privacy Policy periodically. We recommend reviewing this page
-            occasionally to stay informed about how we protect your data.
+            Landmark Kia Service Center may update this Privacy Policy from time
+            to time. Any changes will be posted on this page, and we encourage
+            you to review it periodically.
           </p>
         </section>
 
+        {/* Contact */}
         <section>
-          <h2 className="mb-2 text-2xl font-semibold text-gray-700">Contact Us</h2>
+          <h2 className="mb-2 text-2xl font-semibold text-gray-700">
+            Contact Us
+          </h2>
           <p>
-            If you have any questions or concerns about our Privacy Policy,
-            feel free to contact us at <strong>7997988851</strong>.
+            If you have any questions regarding this Privacy Policy or our data
+            practices, please contact us at{" "}
+            <strong>9100075700</strong>.
           </p>
         </section>
 
         <p className="mt-10 text-sm text-gray-500">
-          Thank you for trusting Lakshmih Hyundai. Your privacy is important to us.
+          Thank you for choosing Landmark Kia Service Center. Your trust and
+          privacy matter to us.
         </p>
-      </div> </>
+      </div>
+
+      <Footer />
+    </>
   );
 }
