@@ -8,7 +8,6 @@ import Login from './login';
 import NotFound from './not-found';
 import ThankYouPage from './ThankYouPage';
 import PrivacyPolicy from './components/screens/PrivacyPolicy';
-import TermsConditions from './components/TermsConditions';
 import Analytics from '../src/admin/Analytics';
 import TermsAndConditions from './components/screens/Terms&Conditions';
 const App = () => {
