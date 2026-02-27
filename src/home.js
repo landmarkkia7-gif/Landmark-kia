@@ -29,7 +29,7 @@ export default function KiaServicePage() {
               Genuine parts, expert technicians & fast turnaround for all Kia
               models.
             </p>
-
+            <p className='mt-4 text-lg text-white/80'>Available across Medipally Attapur Kompally</p>
             <button className='px-6 py-3 mt-6 font-semibold text-black bg-white rounded-lg'>
               Call Now
             </button>
