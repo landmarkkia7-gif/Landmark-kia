@@ -62,28 +62,44 @@ const updateStatus = async (id, status) => {
   }
 };
 
-/* =====================
-   EDITABLE STATUS CELL
-===================== */
 const EditableStatus = ({ row }) => {
   const [value, setValue] = useState(row.status || "");
+  const [isEditing, setIsEditing] = useState(!row.status); // if empty start editing
+
+  const handleSave = async () => {
+    await updateStatus(row.id, value);
+    setIsEditing(false);
+  };
 
   return (
     <div className="flex flex-col w-full gap-1">
       <textarea
-        type="text"
         value={value}
+        disabled={!isEditing}
         onChange={(e) => setValue(e.target.value)}
         className="w-full px-2 py-1 text-sm border rounded"
         placeholder="Write review"
       />
 
-      <button
-        onClick={() => updateStatus(row.id, value)}
-        className="px-2 py-1 text-xs text-white bg-blue-600 rounded"
-      >
-        Save
-      </button>
+      {/* If editing show Save */}
+      {isEditing && value.trim() !== "" && (
+        <button
+          onClick={handleSave}
+          className="px-2 py-1 text-xs text-white bg-blue-600 rounded"
+        >
+          Save
+        </button>
+      )}
+
+      {/* If not editing show Edit */}
+      {!isEditing && (
+        <button
+          onClick={() => setIsEditing(true)}
+          className="px-2 py-1 text-xs text-white bg-gray-600 rounded"
+        >
+          Edit
+        </button>
+      )}
     </div>
   );
 };
