@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo, useCallback } from "react";
 import Navbar from "./navbar";
 import Sidebar from "./sidebar";
-import { collection, getDocs, orderBy, query } from "firebase/firestore";
+import { collection, getDocs, orderBy, query, doc, updateDoc } from "firebase/firestore";
 import { CgSpinner } from "react-icons/cg";
 import { db } from "../lib/firebase";
 import DataTable from "react-data-table-component";
@@ -44,6 +44,49 @@ const Export = ({ onExport }) => (
   </button>
 );
 
+/* =====================
+   UPDATE STATUS FUNCTION
+===================== */
+const updateStatus = async (id, status) => {
+  try {
+    const ref = doc(db, "serviceAppointments", id);
+
+    await updateDoc(ref, {
+      status: status,
+    });
+
+    toast.success("Status updated successfully");
+  } catch (error) {
+    console.error(error);
+    toast.error("Failed to update status");
+  }
+};
+
+/* =====================
+   EDITABLE STATUS CELL
+===================== */
+const EditableStatus = ({ row }) => {
+  const [value, setValue] = useState(row.status || "");
+
+  return (
+    <div className="flex flex-col w-full gap-1">
+      <textarea
+        type="text"
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        className="w-full px-2 py-1 text-sm border rounded"
+        placeholder="Write review"
+      />
+
+      <button
+        onClick={() => updateStatus(row.id, value)}
+        className="px-2 py-1 text-xs text-white bg-blue-600 rounded"
+      >
+        Save
+      </button>
+    </div>
+  );
+};
 /* =====================
    MAIN COMPONENT
 ===================== */
@@ -125,8 +168,8 @@ function ServiceDashboard() {
       Model: row.model,
       City: row.city,
       Pickup: row.pickup,
-      ServiceDate: row.date || "N/A",
       CreatedAt: formatTimestamp(row.timestamp),
+      Status: row.status || "",
     }));
 
     const worksheet = XLSX.utils.json_to_sheet(formatted);
@@ -160,7 +203,12 @@ function ServiceDashboard() {
     { name: "Model", selector: (row) => row.model },
     { name: "City", selector: (row) => row.city },
     { name: "Pickup", selector: (row) => row.pickup },
-    { name: "Service Date", selector: (row) => row.date || "N/A" },
+
+    {
+      name: "Customer Review",
+      cell: (row) => <EditableStatus row={row} />,
+    },
+
     {
       name: "Created At",
       selector: (row) => formatTimestamp(row.timestamp),
