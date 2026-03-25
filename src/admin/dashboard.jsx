@@ -1,7 +1,15 @@
 import React, { useEffect, useState, useMemo, useCallback } from "react";
 import Navbar from "./navbar";
 import Sidebar from "./sidebar";
-import { collection, getDocs, orderBy, query, doc, updateDoc } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  orderBy,
+  query,
+  doc,
+  updateDoc,
+  onSnapshot,
+} from "firebase/firestore";
 import { CgSpinner } from "react-icons/cg";
 import { db } from "../lib/firebase";
 import DataTable from "react-data-table-component";
@@ -9,93 +17,80 @@ import toast from "react-hot-toast";
 import * as XLSX from "xlsx";
 import { useParams } from "react-router-dom";
 
-/* =====================
-   TABLE STYLES
-===================== */
+/* ===================== STYLES ===================== */
 const customStyles = {
-  rows: { style: { minHeight: "55px" } },
+  rows: { style: { minHeight: "48px" } },
+
   headCells: {
     style: {
-      paddingLeft: "8px",
-      paddingRight: "8px",
+      paddingLeft: "6px",
+      paddingRight: "6px",
       backgroundColor: "black",
       color: "white",
-      fontSize: "15px",
+      fontSize: "14px",
+      whiteSpace: "nowrap",
     },
   },
+
   cells: {
     style: {
-      paddingLeft: "8px",
-      paddingRight: "8px",
-      borderRight: "1px solid #eaeaea",
+      paddingLeft: "6px",
+      paddingRight: "6px",
+      borderRight: "1px solid #eee",
+      whiteSpace: "nowrap",
     },
   },
 };
 
-/* =====================
-   EXPORT BUTTON
-===================== */
+/* ===================== EXPORT ===================== */
 const Export = ({ onExport }) => (
   <button
-    className="px-5 py-1.5 text-sm text-white bg-green-600 rounded"
+    className="px-4 py-1.5 text-sm text-white bg-green-600 rounded"
     onClick={onExport}
   >
-    Export to Excel
+    Export
   </button>
 );
 
-/* =====================
-   UPDATE STATUS FUNCTION
-===================== */
+/* ===================== UPDATE STATUS ===================== */
 const updateStatus = async (id, status) => {
   try {
-    const ref = doc(db, "serviceAppointments", id);
-
-    await updateDoc(ref, {
-      status: status,
-    });
-
-    toast.success("Status updated successfully");
-  } catch (error) {
-    console.error(error);
-    toast.error("Failed to update status");
+    await updateDoc(doc(db, "serviceAppointments", id), { status });
+    toast.success("Status updated");
+  } catch {
+    toast.error("Update failed");
   }
 };
 
+/* ===================== EDITABLE STATUS ===================== */
 const EditableStatus = ({ row }) => {
   const [value, setValue] = useState(row.status || "");
-  const [isEditing, setIsEditing] = useState(!row.status); // if empty start editing
+  const [edit, setEdit] = useState(!row.status);
 
-  const handleSave = async () => {
+  const save = async () => {
     await updateStatus(row.id, value);
-    setIsEditing(false);
+    setEdit(false);
   };
 
   return (
-    <div className="flex flex-col w-full gap-1">
+    <div className="flex flex-col gap-1">
       <textarea
         value={value}
-        disabled={!isEditing}
+        disabled={!edit}
         onChange={(e) => setValue(e.target.value)}
-        className="w-full px-2 py-1 text-sm border rounded"
-        placeholder="Write review"
+        className="px-8 py-1 text-sm border rounded"
       />
-
-      {/* If editing show Save */}
-      {isEditing && value.trim() !== "" && (
+      {edit ? (
         <button
-          onClick={handleSave}
+          onClick={save}
           className="px-2 py-1 text-xs text-white bg-blue-600 rounded"
         >
           Save
         </button>
-      )}
-
-      {/* If not editing show Edit */}
-      {!isEditing && (
+      ) : (
         <button
-          onClick={() => setIsEditing(true)}
-          className="px-2 py-1 text-xs text-white bg-gray-600 rounded"
+          onClick={() => setEdit(true)}
+          className="px-2 py-1 text-xs text-white bg-gray-500 rounded"
         >
           Edit
         </button>
@@ -103,166 +98,261 @@ const EditableStatus = ({ row }) => {
     </div>
   );
 };
-/* =====================
-   MAIN COMPONENT
-===================== */
+
+/* ===================== MAIN ===================== */
 function ServiceDashboard() {
   const { city } = useParams();
   const selectedCity = city?.toUpperCase() || "ALL";
-
-  const [active, setActive] = useState(true);
+  const [active, setActive] = useState("ServiceDashboard");
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
 
+  const [prevCount, setPrevCount] = useState(0);
+  const [newLeadIds, setNewLeadIds] = useState(new Set());
+  const [todayCount, setTodayCount] = useState(0);
+  const [duplicateNumbers, setDuplicateNumbers] = useState(new Set());
+
   const rowsPerPage = 10;
-  const handleActive = () => setActive(!active);
 
-  /* =====================
-     FETCH DATA
-  ===================== */
+  /* ===================== REALTIME ===================== */
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const q = query(
-          collection(db, "serviceAppointments"),
-          orderBy("timestamp", "desc")
-        );
+    const q = query(
+      collection(db, "serviceAppointments"),
+      orderBy("timestamp", "desc")
+    );
 
-        const snap = await getDocs(q);
+    const unsub = onSnapshot(q, (snap) => {
+      const list = snap.docs.map((d) => ({
+        id: d.id,
+        ...d.data(),
+      }));
 
-        const list = snap.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
+      // NEW LEAD DETECT
+      if (prevCount && list.length > prevCount) {
+        const newItems = list.slice(0, list.length - prevCount);
+        const ids = new Set(newItems.map((i) => i.id));
+        setNewLeadIds(ids);
 
-        setData(list);
-        setFilteredData(list);
-      } catch (error) {
-        console.error(error);
-        toast.error("Failed to load service appointments");
-      } finally {
-        setLoading(false);
+        const latest = newItems[0];
+        toast(`🚗 ${latest.name} - ${latest.mobile}`);
+
+        const audio = new Audio("/notification.wav");
+        audio.play().catch(() => { });
+
+        setTimeout(() => setNewLeadIds(new Set()), 10000);
       }
-    };
 
-    fetchData();
-  }, []);
+      setPrevCount(list.length);
 
-  /* =====================
-     DATE FORMAT
-  ===================== */
+      // TODAY COUNT
+      const today = new Date().toISOString().split("T")[0];
+      const todayLeads = list.filter((i) => {
+        if (!i.timestamp?.seconds) return false;
+        return (
+          new Date(i.timestamp.seconds * 1000)
+            .toISOString()
+            .split("T")[0] === today
+        );
+      });
+      setTodayCount(todayLeads.length);
+
+      // DUPLICATES
+      const map = {};
+      const dup = new Set();
+      list.forEach((i) => {
+        if (!i.mobile) return;
+        if (map[i.mobile]) dup.add(i.mobile);
+        else map[i.mobile] = true;
+      });
+      setDuplicateNumbers(dup);
+
+      setData(list);
+      setLoading(false);
+    });
+
+    return () => unsub();
+  }, [prevCount]);
+
+  /* ===================== FILTER ===================== */
+  useEffect(() => {
+    setFilteredData(
+      selectedCity === "ALL"
+        ? data
+        : data.filter(
+          (i) => i.city?.toUpperCase() === selectedCity
+        )
+    );
+  }, [data, selectedCity]);
+
+  /* ===================== DATE ===================== */
+  const formatDate = (t) =>
+    t?.seconds
+      ? new Date(t.seconds * 1000).toLocaleDateString("en-CA")
+      : "N/A";
+
+  /* ===================== REFRESH ===================== */
+  const refresh = async () => {
+    setLoading(true);
+    const snap = await getDocs(
+      query(collection(db, "serviceAppointments"), orderBy("timestamp", "desc"))
+    );
+    const list = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+    setData(list);
+    toast.success("Refreshed");
+    setLoading(false);
+  };
+
+  /* ===================== EXPORT ===================== */
+  const exportExcel = useCallback(() => {
+    const ws = XLSX.utils.json_to_sheet(
+      data.map((r, i) => ({
+        ID: i + 1,
+        Name: r.name,
+        Email: r.email,
+        Phone: r.mobile,
+        City: r.city,
+        Model: r.model,
+        Pickup: r.pickup,
+
+        // ✅ ADD THIS
+        CustomerReview: r.status || "",
+
+        Date: formatDate(r.timestamp),
+      }))
+    );
+
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Service Data");
+
+    XLSX.writeFile(wb, `ALL-Service-Data.xlsx`);
+  }, [data]);
+
+
   const formatTimestamp = (timestamp) => {
     if (!timestamp?.seconds) return "N/A";
     return new Date(timestamp.seconds * 1000).toLocaleDateString("en-CA");
   };
 
-  /* =====================
-     FILTER BY CITY
-  ===================== */
-  useEffect(() => {
-    const result =
-      selectedCity === "ALL"
-        ? data
-        : data.filter(
-            (item) => item.city?.toUpperCase() === selectedCity
-          );
 
-    setFilteredData(result);
-  }, [selectedCity, data]);
-
-  /* =====================
-     EXCEL EXPORT
-  ===================== */
-  const downloadExcel = useCallback(() => {
-    const formatted = filteredData.map((row, index) => ({
-      ID: index + 1,
-      Name: row.name,
-      Email: row.email,
-      Phone: row.mobile,
-      Model: row.model,
-      City: row.city,
-      Pickup: row.pickup,
-      CreatedAt: formatTimestamp(row.timestamp),
-      Status: row.status || "",
-    }));
-
-    const worksheet = XLSX.utils.json_to_sheet(formatted);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Service Appointments");
-
-    XLSX.writeFile(
-      workbook,
-      `${selectedCity}-service-appointments.xlsx`
-    );
-  }, [filteredData, selectedCity]);
-
-  const actionsMemo = useMemo(
-    () => <Export onExport={downloadExcel} />,
-    [downloadExcel]
+  const actions = useMemo(
+    () => (
+      <div className="flex gap-2">
+        <button
+          onClick={refresh}
+          className="px-3 py-1 text-white bg-blue-600 rounded"
+        >
+          Refresh
+        </button>
+        <Export onExport={exportExcel} />
+      </div>
+    ),
+    [exportExcel]
   );
 
-  /* =====================
-     TABLE COLUMNS
-  ===================== */
   const columns = [
-    {
-      name: "ID",
-      selector: (_, index) =>
-        (currentPage - 1) * rowsPerPage + index + 1,
-      width: "70px",
-    },
-    { name: "Name", selector: (row) => row.name },
-    { name: "Email", selector: (row) => row.email },
-    { name: "Phone", selector: (row) => row.mobile },
-    { name: "Model", selector: (row) => row.model },
-    { name: "City", selector: (row) => row.city },
-    { name: "Pickup", selector: (row) => row.pickup },
+  {
+    name: "ID",
+    selector: (_, i) =>
+      (currentPage - 1) * rowsPerPage + i + 1,
+    width: "60px",
+    center: true,
+  },
 
-    {
-      name: "Customer Review",
-      cell: (row) => <EditableStatus row={row} />,
-    },
-
-    {
-      name: "Created At",
-      selector: (row) => formatTimestamp(row.timestamp),
-      sortable: true,
-    },
-  ];
-
-  /* =====================
-     RENDER
-  ===================== */
-  return (
-    <div className="flex flex-row h-screen">
-      <Sidebar active={active} />
-      <div className="flex-auto overflow-auto bg-gray-50">
-        <Navbar handleActive={handleActive} />
-
-        <div className="mx-5 mt-5">
-          {loading ? (
-            <CgSpinner
-              className="flex mx-auto animate-spin"
-              size={50}
-              color="#7e22ce"
-            />
-          ) : (
-            <DataTable
-              title={`Service Appointments - ${selectedCity}`}
-              columns={columns}
-              data={filteredData}
-              pagination
-              paginationPerPage={rowsPerPage}
-              onChangePage={(page) => setCurrentPage(page)}
-              fixedHeader
-              highlightOnHover
-              customStyles={customStyles}
-              actions={actionsMemo}
-            />
+  {
+    name: "Name",
+    minWidth: "180px",
+    cell: (row) => (
+      <div>
+        <div className="font-medium">{row.name}</div>
+        <div className="flex gap-1 mt-1">
+          {newLeadIds.has(row.id) && (
+            <span className="px-1 text-xs text-white bg-red-500 rounded">
+              NEW
+            </span>
+          )}
+          {duplicateNumbers.has(row.mobile) && (
+            <span className="px-1 text-xs text-white bg-yellow-500 rounded">
+              DUP
+            </span>
           )}
         </div>
+      </div>
+    ),
+  },
+
+  { name: "Email", selector: (row) => row.email, minWidth: "190px" },
+
+  {
+    name: "Phone",
+    selector: (r) => r.mobile,
+    width: "120px",
+  },
+
+  {
+    name: "City",
+    selector: (r) => r.city,
+    width: "120px",
+  },
+
+  {
+    name: "Model",
+    selector: (r) => r.model,
+    width: "140px",
+  },
+
+  {
+    name: "Pickup",
+    selector: (row) => row.pickup,
+    width: "110px",
+    center: true,
+  },
+
+  {
+    name: "Customer Review",
+    minWidth: "220px",
+    cell: (row) => <EditableStatus row={row} />,
+  },
+
+  {
+    name: "Created At",
+    selector: (row) => formatTimestamp(row.timestamp),
+    sortable: true,
+    width: "110px",
+    center: true,
+  },
+];
+
+  /* ===================== UI ===================== */
+  return (
+    <div className="flex">
+      <div className="hidden md:block">
+        <Sidebar active={active} />
+      </div>
+      <div className="flex-1 bg-gray-50">
+        <Navbar />
+
+        {loading ? (
+          <CgSpinner className="mx-auto animate-spin" size={40} />
+        ) : (
+          <DataTable
+            title={`Service - ${selectedCity}`}
+            columns={columns}
+            data={filteredData}
+            pagination
+            onChangePage={setCurrentPage}
+            customStyles={customStyles}
+            actions={actions}
+            conditionalRowStyles={[
+              {
+                when: (row) => newLeadIds.has(row.id),
+                style: { backgroundColor: "#dcfce7" },
+              },
+            ]}
+          />
+        )}
+
       </div>
     </div>
   );

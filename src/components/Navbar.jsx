@@ -15,12 +15,12 @@ function Navbar() {
 
       <div className="flex items-center text-base font-semibold md:text-xl">
         <a
-          href="tel:+919100075700"
+          href="tel:+919000152007"
           className="flex items-center gap-2 font-bold transition hover:text-yellow-400"
-          aria-label="Call us at 9100075700"
+          aria-label="Call us at 9000152007"
         >
           <FaPhoneAlt className="text-sm text-red-500 md:text-lg" />
-          <span className="">9100075700</span>
+          <span className="">9000152007</span>
         </a>
       </div>
 

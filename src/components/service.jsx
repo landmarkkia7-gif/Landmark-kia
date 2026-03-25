@@ -18,7 +18,7 @@ function service() {
         image="/images/Attapur.jpeg"
         address="Door No 4-3-161 MSurvey No 497, 501 part, Rajendranagar Mandal 498 / 499 & 500/1, Attapur, Telangana 500008 Attapur, Hyderabad, Telangana 500008"
         time="Mon – Sun 9AM – 6PM"
-        phone="9100075700"
+        phone="9000152007"
         email="anjani.n@landmark-kia.in"
         detailsLink="https://www.google.com/maps/place/Kia+Car+Service+-+Landmark+Kia+Attapur/data=!4m2!3m1!1s0x0:0x7b5d2254b3289330?sa=X&ved=1t:2428&ictx=111"
 
@@ -29,7 +29,7 @@ function service() {
         address="Door No. 7-67/2, Survey No. 19 & 20, Adjacent Lane of HP Petrol Pump,
 Kompally, Hyderabad, Telangana – 500100"
         time="Mon – Sun 9AM – 7PM"
-        phone="9100075700"
+        phone="9000152007"
         email="anjani.n@landmark-kia.in"
         detailsLink="/"
 

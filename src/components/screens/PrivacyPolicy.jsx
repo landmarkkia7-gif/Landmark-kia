@@ -125,7 +125,7 @@ export default function PrivacyPolicy() {
           <p>
             If you have any questions regarding this Privacy Policy or our data
             practices, please contact us at{" "}
-            <strong>9100075700</strong>.
+            <strong>9000152007</strong>.
           </p>
         </section>
 

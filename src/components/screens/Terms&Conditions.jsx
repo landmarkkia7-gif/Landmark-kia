@@ -157,7 +157,7 @@ export default function TermsAndConditions() {
           </h2>
           <p>
             For any questions regarding these Terms & Conditions, please contact
-            us at <strong>9100075700</strong>.
+            us at <strong>9000152007</strong>.
           </p>
         </section>
 
