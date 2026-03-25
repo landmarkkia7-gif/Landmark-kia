@@ -103,7 +103,7 @@ const EditableStatus = ({ row }) => {
 function ServiceDashboard() {
   const { city } = useParams();
   const selectedCity = city?.toUpperCase() || "ALL";
-  const [active, setActive] = useState("ServiceDashboard");
+  const [active] = useState("ServiceDashboard");
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -111,7 +111,7 @@ function ServiceDashboard() {
 
   const [prevCount, setPrevCount] = useState(0);
   const [newLeadIds, setNewLeadIds] = useState(new Set());
-  const [todayCount, setTodayCount] = useState(0);
+  const [setTodayCount] = useState(0);
   const [duplicateNumbers, setDuplicateNumbers] = useState(new Set());
 
   const rowsPerPage = 10;

@@ -53,7 +53,7 @@ export default function Popup() {
         </div>
 
         <h1 className='mb-2 font-serif text-3xl tracking-widest'>
-          LakshmiHYUNDAI
+         kia service
         </h1>
         <p className='mb-4 font-medium'>GET A FREE QUOTE & NEW OFFERS</p>
 
