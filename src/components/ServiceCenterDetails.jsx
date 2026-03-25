@@ -47,7 +47,9 @@ export default function ServiceCenterDetails({
             {phone && (
               <div className="flex gap-3">
                 <FiPhone className="mt-1 text-xl" />
-                <p>{phone}</p>
+                <a href={`tel:+91${phone}`} className="hover:underline">
+                  {phone}
+                </a>
               </div>
             )}
 
