@@ -8,7 +8,7 @@ function service() {
       image="/images/medipelly.jpeg"
       address="Survey No. 26, MRR Estates, H.no - 17-60/A, opp. CPRI ROAD, Medipally, Peerzadiguda, Hyderabad, Telangana 500098"
       time="Mon – Sun 9AM – 7PM"
-      phone="91000 75700"
+      phone="9000152007"
       email="anjani.n@landmark-kia.in"
       detailsLink="https://maps.app.goo.gl/uoXMo4rka5nVxYnN8"
 

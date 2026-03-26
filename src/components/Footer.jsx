@@ -23,11 +23,11 @@ export default function Footer() {
           <div className="space-y-3 text-sm">
             {/* PHONE */}
             <a
-              href="tel:+919100075700"
+              href="tel:+919000152007"
               className="flex items-center gap-2 text-white hover:text-gray-300"
             >
               <FiPhone />
-              <span>+91 91000 75700</span>
+              <span>+91 9000152007</span>
             </a>
 
             {/* EMAIL */}
