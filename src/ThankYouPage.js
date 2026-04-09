@@ -1,17 +1,18 @@
 import { CheckCircle } from 'lucide-react';
-import React from 'react';
+import React  from "react";
 import { Link } from 'react-router-dom';
 
 const ThankYouPage = () => {
-  //   useEffect(() => {
-  //     // Google Ads Conversion Tracking
-  //     window.gtag && window.gtag("event", "conversion", {
-  //       send_to: "AW-16918294850/KWoeCI6b2asaEMLiooM_",
-  //       value: 1.0,
-  //       currency: "INR",
-  //     });
-  //   }, []);
 
+//  useEffect(() => {
+//     if (window.gtag) {
+//       window.gtag("event", "conversion", {
+//         send_to: "AW-17849610803/fL79CJjLovUbELPkrb9C",
+//         value: 1.0,
+//         currency: "INR",
+//       });
+//     }
+//   }, []);
   return (
     <div className='flex flex-col items-center justify-center min-h-screen bg-gray-50'>
       {/* Navigation Bar */}
